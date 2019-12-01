@@ -78,8 +78,6 @@ class AppointmentController {
       }
     });
 
-    console.log(checkAvaiable);
-
     if (checkAvaiable) {
       return res.status(400).json({ error: "date does not available" });
     }
