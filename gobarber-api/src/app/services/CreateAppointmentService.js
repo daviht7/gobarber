@@ -5,13 +5,13 @@ import { startOfHour, parseISO, isBefore, format } from "date-fns";
 import pt from "date-fns/locale/pt";
 
 class CreateAppointmentService {
-  async run({ provider_id, user_id, date }) {
+  async run({ provider_id, user_id, date, res }) {
     const isProvider = await User.findOne({
       where: { id: provider_id, provider: true }
     });
 
     if (!isProvider) {
-      throw new Error("you can only create appointment with a provider.");
+      return res.status(400).json({ error: "is not a provider" });
     }
 
     const hourStart = startOfHour(parseISO(date));
