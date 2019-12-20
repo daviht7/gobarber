@@ -4,6 +4,8 @@ import Queue from "../../lib/Queue";
 import CancellationMail from "../jobs/CancellationMail";
 import { isBefore, subHours } from "date-fns";
 
+import Cache from "../../lib/Cache";
+
 class CancelAppointmentService {
   async run({ provider_id, user_id }) {
     console.log("log", provider_id, user_id);
@@ -35,6 +37,8 @@ class CancelAppointmentService {
     appointment.canceled_at = new Date();
 
     await appointment.save();
+
+    await Cache.invalidatePrefix(`user:${user.id}:appointments`);
 
     await Queue.add(CancellationMail.key, { appointment });
   }
