@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import "express-async-errors";
 import routes from "./routes";
+import helmet from "helmet";
 import "./database";
 import cors from "cors";
 import path from "path";
@@ -22,6 +23,7 @@ class App {
 
   middlewares() {
     this.server.use(Sentry.Handlers.requestHandler());
+    this.server.use(helmet());
     this.server.use(cors());
     this.server.use(express.json());
     this.server.use(
